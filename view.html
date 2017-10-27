@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-D9XILkoivXN+bcvB2kSOowkIvIcBbNdoDQvfBNsxYAIieZbx8/SI4NeUvrRGCpDi" crossorigin="anonymous">
+    <title>Hot Little Bistro Reservations</title>
+
+    <style>
+        body {
+            text-align: center;
+            padding: 40px;
+            background: url("http://architectureimg.com/wp-content/uploads/2016/06/other-french-bistro-cityscape-cafe-painting-scenery-france-art-artwork-wide-screen-background-images.jpg");
+            background-size: cover;
+        }
+        
+        .class {
+            text-align: left;
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+<div class="jumbotron">
+    <h1>Hot Little Bistro</h1>
+    <p>Current Reservations and Waiting List</p>
+    <p><a href="/new" class="btn btn-primary btn-lg" id="newRes-Btn">Make Reservation</a></p>
+</div>
+
+<!-- reservation section -->
+<div class = row>
+
+    <!-- currently seated -->
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>Currently Seated</h3>
+            </div>
+            <div class="panel-body" id="tableSection">
+            </div>
+        </div>
+    </div>
+
+    <!-- Waiting List -->
+    <div class = "col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3>Waiting List</h3>
+            </div>
+            <div class="panel-body" id="waitlistSection">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- footer -->
+<div class="well well-sm">
+    <footer class="footer">
+      <div class="container">
+        <p>Control Panel</p>
+        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a></p>
+      </div>
+    </footer>
+</div>
+
+</body>
+</html>
+
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+function runTableQuery(){
+    console.log("fetching the list of patrons seated in the bistro");
+    var currentURL = window.location.origin;
+
+    $.ajax({url: currentURL + "/api/tables", method: "GET"})
+        .done(function(tableData) {
+
+            // console.log("------------------------------------");
+            // console.log("URL: " + currentURL + "/api/tables");
+            // console.log("------------------------------------");
+            // console.log(tableData);
+            // console.log("------------------------------------")
+
+            for (var i=0; i<tableData.length; i++){
+
+                var tableSection = $("<div>");
+                tableSection.addClass('well');
+                tableSection.attr('id', 'tableWell-' + i+1);
+
+                $('#tableSection').append(tableSection);
+
+                var tableNumber = i + 1;
+
+                $("#tableWell-"+ i+1).append('<h4><span class="label label-primary">' + tableNumber + "</span> " + tableData[i].customerName + " , party of " + tableData[i].partySize + "</h4>");
+            }
+        });
+    }
+
+function runWaitListQuery(){
+    console.log("building the wait list");
+    var currentURL = window.location.origin;
+
+    $.ajax({url: currentURL + "/api/waitlist", method: "GET"})
+        .done(function(waitListData) {
+
+            console.log("------------------------------------");
+            console.log("URL: " + currentURL + "/api/waitlist");
+            console.log("------------------------------------");
+            console.log(waitListData);
+            console.log("------------------------------------")
+
+            for (var i=0; i<waitListData.length; i++){
+
+                var waitlistSection = $("<div>");
+                waitlistSection.addClass('well');
+                waitlistSection.attr('id', 'waitlistWell-' + i+1);
+
+                $('#waitlistSection').append(waitlistSection);
+
+                var tableNumber = i + 1;
+                $("#waitlistWell-"+ i+1).append('<h4><span class="label label-primary">' + tableNumber + "</span> " + waitListData[i].customerName + " , party of " + waitListData[i].partySize + "</h4>");
+            }
+        });
+}
+
+function clearTable(){
+    var currentURL = window.location.origin;
+    $.ajax({url: currentURL + "/api/clear", method: "POST"})
+}
+
+$("#clear").on('click', function(){
+    alert("Clearing...");
+    clearTable();
+
+    location.reload();
+})
+
+runTableQuery();
+runWaitListQuery();
+
+
+</script>
+

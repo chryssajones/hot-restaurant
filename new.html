@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-D9XILkoivXN+bcvB2kSOowkIvIcBbNdoDQvfBNsxYAIieZbx8/SI4NeUvrRGCpDi" crossorigin="anonymous">
+    <title>Hot Little Bistro Reservations</title>
+
+    <style>
+        body {
+            text-align: center;
+            padding: 40px;
+            background: url("http://architectureimg.com/wp-content/uploads/2016/06/other-french-bistro-cityscape-cafe-painting-scenery-france-art-artwork-wide-screen-background-images.jpg");
+            background-size: cover;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div class="jumbotron">
+    <h1>Hot Little Bistro</h1>
+    <p>Request a Table Here!</p>
+    <p><a href="/view" class="btn btn-success btn-lg" id="switch-view-btn">View Wait List</a></p>
+</div>
+
+<!-- input form for new reservations -->
+<form class="form-horizontal">
+  <fieldset>
+    <div class= "panel panel-default">
+      <div class="panel-heading">
+        <h3>New Reservation</h3>
+      </div>
+    <div class="panel-body">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Patron's Name</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" id="nameInput">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Email</label>
+          <div class="col-lg-10">
+            <input type="email" class="form-control" id="emailInput">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Phone Number</label>
+          <div class="col-lg-10">
+            <input type="number" class="form-control" id="phoneInput">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Number in Party</label>
+          <div class="col-lg-10">
+            <input type="number" class="form-control" id="partyInput">
+          </div>
+        </div>
+        <a href="#" class="btn btn-success" id="submitBtn">Submit</a>
+    </div>
+    </div>  
+  </fieldset>
+</form>
+
+
+<div class="well well-sm">
+  <footer class="footer">
+    <div class="container">
+      <p>Control Panel</p>
+      <p><a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a> </p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
+
+<!-- <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script> -->
+<!-- <script src="https://use.fontawesome.com/1128334790.js"></script>  -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+  // Initialize Firebase
+// var config = {
+//     apiKey: "AIzaSyCOwu_gdlNdho7-QU7pngU8XwEy4wzQ2EE",
+//     authDomain: "hot-little-bistro.firebaseapp.com",
+//     databaseURL: "https://hot-little-bistro.firebaseio.com",
+//     projectId: "hot-little-bistro",
+//     storageBucket: "",
+//     messagingSenderId: "752703388872"
+//   };
+//   firebase.initializeApp(config);
+
+// var database = firebase.database();
+
+$("#submitBtn").on("click", function(event) {
+  event.preventDefault();
+  console.log("the submit button was clicked!"); 
+
+  var newPatron = {
+    customerName: $("#nameInput").val().trim(),
+    customerEmail: $("#emailInput").val().trim(),
+    phoneNumber: $("#phoneInput").val().trim(),
+    partySize: $("#partyInput").val().trim()
+  };
+
+  console.log(newPatron);
+
+  $.post("/api/tables", newPatron,  
+  function(data){  
+
+    if(data) {
+      alert("Congratulations, you've got a table!")
+    } else {
+      alert("Sorry, our tables are full.  You are on the waiting list.")
+    }
+
+    $('#nameInput').val("");
+    $('#emailInput').val("");
+    $('#phoneInput').val("");
+    $('#partyInput').val("");
+
+    });
+
+});
+
+
+</script>
