@@ -44,6 +44,7 @@ app.get("/add", function(req, res) {
 
 app.get("/all", function(req, res) {
   res.json(patrons);
+  console.log(patrons);
 });
 
 
