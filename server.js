@@ -2,6 +2,7 @@
 // ===============================
 var express = require("express");
 var bodyParser = require("body-parser");
+var path = require("path");
 
 var tableData = require("./data/tableData");
 var waitListData = require("./data/waitinglistData");
