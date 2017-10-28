@@ -11,7 +11,7 @@
     <style>
         body {
             text-align: center;
-            padding: 40px;
+            margin: 40px;
             background: url("http://architectureimg.com/wp-content/uploads/2016/06/other-french-bistro-cityscape-cafe-painting-scenery-france-art-artwork-wide-screen-background-images.jpg");
             background-size: cover;
         }
@@ -101,7 +101,7 @@ function runTableQuery(){
 
                 var tableNumber = i + 1;
 
-                $("#tableWell-"+ i+1).append('<h4><span class="label label-primary">' + tableNumber + "</span> " + tableData[i].customerName + " , party of " + tableData[i].partySize + "</h4>");
+                $("#tableWell-"+ i+1).append('<h4><span class="label label-primary">' + tableNumber + "</span> " + tableData[i].customerName + ", party of " + tableData[i].partySize + "</h4>");
             }
         });
     }
@@ -128,7 +128,7 @@ function runWaitListQuery(){
                 $('#waitlistSection').append(waitlistSection);
 
                 var tableNumber = i + 1;
-                $("#waitlistWell-"+ i+1).append('<h4><span class="label label-primary">' + tableNumber + "</span> " + waitListData[i].customerName + " , party of " + waitListData[i].partySize + "</h4>");
+                $("#waitlistWell-"+ i+1).append('<h4><span class="label label-success">' + tableNumber + "</span> " + waitListData[i].customerName + ", party of " + waitListData[i].partySize + "</h4>");
             }
         });
 }
